@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { EventInterface } from 'src/app/event/event-interface';
 
 
-
 const url = "http://localhost:8081/getallevents";
 @Injectable({
   providedIn: 'root'
@@ -15,10 +14,9 @@ export class EventService {
   constructor(private http: HttpClient) { }
 
 
+  getAllEvents(): Observable<EventInterface> {
 
-  getAllEvents(): Observable<any> {
-
-    return this.http.get(url);
-
+    return this.http.get<EventInterface>(url);
+    
   }
 }

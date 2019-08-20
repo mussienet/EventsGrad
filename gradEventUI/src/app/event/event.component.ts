@@ -14,14 +14,16 @@ export class EventComponent implements OnInit {
   constructor(public eventService: EventService) { }
 
   events: EventInterface;
-
+  test: Event[];
 
   ngOnInit() {
     this.eventService.getAllEvents().subscribe(data => {
 
       this.events = data;
-
-      console.log("the value of event ", this.events, typeof (this.events))
+      this.events = JSON.parse(JSON.stringify(data));
+      console.log("the value of event ", this.test, " type", typeof (this.events));
+    }, (error) => {
+      alert("Error: " + error.statusText)
     });
 
   }
