@@ -12,16 +12,16 @@ import { EventInterface } from 'src/app/event/event-interface';
 export class EventComponent implements OnInit {
 
   constructor(public eventService: EventService) { }
-  
-   events: any = [];
-  // events: ["hi", "by", "GoodBye"];
+
+  events: EventInterface;
+
 
   ngOnInit() {
     this.eventService.getAllEvents().subscribe(data => {
-      
+
       this.events = data;
 
-      console.log("the value of event ", this.events, typeof(this.events))
+      console.log("the value of event ", this.events, typeof (this.events))
     });
 
   }
