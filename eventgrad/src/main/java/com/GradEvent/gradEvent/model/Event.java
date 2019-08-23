@@ -1,29 +1,33 @@
 package com.GradEvent.gradEvent.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.*;
 
 @Entity
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "event_id")
+    private long event_id;
     private String eventName;
     private String eventDescription;
     @Column
     private LocalDate eventDate;
     private String eventAddress;
 
-    public long getId() {
-        return id;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade =  CascadeType.ALL, mappedBy = "events")
+    private List<Person> participant = new ArrayList<>();
+
+
+    public long getEvent_id() {
+        return event_id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEvent_id(long event_id) {
+        this.event_id = event_id;
     }
 
     public String getEventName() {
@@ -58,14 +62,11 @@ public class Event {
         this.eventAddress = eventAddress;
     }
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id=" + id +
-                ", eventName='" + eventName + '\'' +
-                ", eventDescription='" + eventDescription + '\'' +
-                ", eventDate=" + eventDate +
-                ", eventAddress='" + eventAddress + '\'' +
-                '}';
+    public List<Person> getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(List<Person> participant) {
+        this.participant = participant;
     }
 }

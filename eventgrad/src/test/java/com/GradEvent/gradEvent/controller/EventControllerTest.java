@@ -134,7 +134,7 @@ public class EventControllerTest {
     @Test
     public void updateEventTest() throws Exception {
         this.event.setEventName("Wedding");
-        this.event.setId(11);
+        this.event.setEvent_id(11);
         this.mockMvc.perform(MockMvcRequestBuilders
                 .put("/updateevent")
                 .content(asJsonSting(this.event))
@@ -148,7 +148,7 @@ public class EventControllerTest {
     @Test
     public void deletEventTest() throws Exception {
 
-        this.event.setId(11);
+        this.event.setEvent_id(11);
         this.mockMvc.perform(MockMvcRequestBuilders
                 .delete("/deleteevent")
                 .content(asJsonSting(this.event))

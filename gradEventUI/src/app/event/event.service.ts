@@ -14,7 +14,14 @@ export class EventService {
   constructor(private http: HttpClient) { }
 
 
-  getAllEvents(): Observable<EventInterface> {
+  getAllEvents(): Observable<Event> {
+
+    return this.http.get<Event>(url);
+    
+  }
+
+
+  getAllEventsInterface(): Observable<EventInterface> {
 
     return this.http.get<EventInterface>(url);
     
