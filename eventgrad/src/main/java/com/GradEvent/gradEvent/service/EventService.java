@@ -50,10 +50,15 @@ public class EventService {
     }
 
 
-    public Event addParticipant(long event_id, long person_id) {
+    public Boolean addParticipant(long event_id, long person_id) {
         Event event1 = this.eventRepository.findById(event_id).get();
         Person person1 = this.personRepository.findById(person_id).get();
         person1.addEvent(event1);
-        return this.eventRepository.save(event1);
+
+        this.personRepository.save(person1);
+        this.eventRepository.save(event1);
+
+        return true;
+
     }
 }

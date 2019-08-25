@@ -1,25 +1,32 @@
 package com.GradEvent.gradEvent.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Person {
+public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "person_id")
     private long person_id;
     private String name;
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    @Column(unique = true)
+    private String email;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Person_Event",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
+//    @Fetch(FetchMode.SELECT)
+    @JsonBackReference  // we use this for collections framework
+//    @JsonManagedReference // we use this if it is not collections
     private Set<Event> events;
 
     public Person() {
@@ -50,23 +57,32 @@ public class Person {
         this.events = events;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void addEvent(Event event) {
         this.events.add(event);
         event.addParticipant(this);
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Person person = (Person) o;
-//        return person_id == person.person_id &&
-//                Objects.equals(name, person.name) &&
-//                Objects.equals(events, person.events);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(person_id, name, events);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return person_id == person.person_id &&
+                Objects.equals(name, person.name) &&
+                Objects.equals(email, person.email) ;
+//                Objects.equals(events, person.events); //we don't need to compare the events to compare person
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(person_id, name, email); // events attribute is removed because we don't need to compare events in person plus it will create recursive infinite loop when we are using many to many relationships
+    }
 }

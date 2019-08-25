@@ -70,7 +70,7 @@ public class EventController {
     }
 
     @PostMapping(value = "add-participant")
-    public ResponseEntity<Event> addParticipant(@RequestParam("eventid") long event_id, @RequestParam("personid") long person_id ) {
+    public ResponseEntity<Boolean> addParticipant(@RequestParam("eventid") long event_id, @RequestParam("personid") long person_id ) {
 
 
         return new ResponseEntity<>(this.eventService.addParticipant(event_id, person_id), HttpStatus.OK);
