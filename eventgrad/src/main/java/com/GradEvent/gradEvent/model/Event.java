@@ -1,29 +1,42 @@
 package com.GradEvent.gradEvent.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
-public class Event {
+public class Event implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "event_id")
+    private long event_id;
     private String eventName;
     private String eventDescription;
     @Column
     private LocalDate eventDate;
     private String eventAddress;
 
-    public long getId() {
-        return id;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "events")
+//    @Fetch(FetchMode.SELECT)
+//    @JsonManagedReference // we use this if it is not collections framework
+//    @JsonBackReference // we use this for collections framework
+    private Set<Person> participant;
+
+    public Event() {
+        this.participant = new HashSet<>();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public long getEvent_id() {
+        return event_id;
+    }
+
+    public void setEvent_id(long event_id) {
+        this.event_id = event_id;
     }
 
     public String getEventName() {
@@ -58,14 +71,33 @@ public class Event {
         this.eventAddress = eventAddress;
     }
 
+    public Set<Person> getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(Set<Person> participant) {
+        this.participant = participant;
+    }
+
+    public void addParticipant(Person person) {
+        this.participant.add(person);
+    }
+
     @Override
-    public String toString() {
-        return "Event{" +
-                "id=" + id +
-                ", eventName='" + eventName + '\'' +
-                ", eventDescription='" + eventDescription + '\'' +
-                ", eventDate=" + eventDate +
-                ", eventAddress='" + eventAddress + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return event_id == event.event_id &&
+                Objects.equals(eventName, event.eventName) &&
+                Objects.equals(eventDescription, event.eventDescription) &&
+                Objects.equals(eventDate, event.eventDate) &&
+                Objects.equals(eventAddress, event.eventAddress);
+//                Objects.equals(participant, event.participant);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(event_id, eventName, eventDescription, eventDate, eventAddress); // participant removed to avoid infinite loop
     }
 }
