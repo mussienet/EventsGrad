@@ -1,10 +1,10 @@
 package com.GradEvent.gradEvent.service;
 
 import com.GradEvent.gradEvent.model.Event;
+import com.GradEvent.gradEvent.model.Person;
 import com.GradEvent.gradEvent.respository.EventRepository;
+import com.GradEvent.gradEvent.respository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +14,9 @@ public class EventService {
 
     @Autowired
     EventRepository eventRepository;
+
+    @Autowired
+    PersonRepository personRepository;
 
     public Event creatEvent(Event event) {
 
@@ -44,5 +47,18 @@ public class EventService {
 
     public List<Event> getEventByEventName(String eventName) {
         return this.eventRepository.findEventByEventName(eventName);
+    }
+
+
+    public Boolean addParticipant(long event_id, long person_id) {
+        Event event1 = this.eventRepository.findById(event_id).get();
+        Person person1 = this.personRepository.findById(person_id).get();
+        person1.addEvent(event1);
+
+        this.personRepository.save(person1);
+        this.eventRepository.save(event1);
+
+        return true;
+
     }
 }
