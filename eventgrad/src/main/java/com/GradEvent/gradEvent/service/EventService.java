@@ -54,8 +54,6 @@ public class EventService {
         Event event1 = this.eventRepository.findById(event_id).get();
         Person person1 = this.personRepository.findById(person_id).get();
         person1.addEvent(event1);
-
         return this.eventRepository.save(event1);
-
     }
 }

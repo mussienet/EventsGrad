@@ -1,12 +1,8 @@
 package com.GradEvent.gradEvent.model;
 
-import com.GradEvent.gradEvent.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,10 +20,10 @@ public class Person {
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
-    private List<Event> events;
+    private Set<Event> events;
 
     public Person() {
-        this.events = new ArrayList<>();
+        this.events = new HashSet<>();
     }
 
     public long getPerson_id() {
@@ -46,16 +42,31 @@ public class Person {
         this.name = name;
     }
 
-    public List<Event> getEvents() {
+    public Set<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event> events) {
+    public void setEvents(Set<Event> events) {
         this.events = events;
     }
 
-    public void addEvent(Event event){
+    public void addEvent(Event event) {
         this.events.add(event);
         event.addParticipant(this);
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Person person = (Person) o;
+//        return person_id == person.person_id &&
+//                Objects.equals(name, person.name) &&
+//                Objects.equals(events, person.events);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(person_id, name, events);
+//    }
 }
