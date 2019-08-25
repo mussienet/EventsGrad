@@ -1,6 +1,7 @@
 package com.GradEvent.gradEvent.controller;
 
 import com.GradEvent.gradEvent.model.Event;
+import com.GradEvent.gradEvent.model.Person;
 import com.GradEvent.gradEvent.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -67,4 +68,12 @@ public class EventController {
         this.eventService.deleteEventById(eventId);
         return new ResponseEntity<Event>(HttpStatus.ACCEPTED);
     }
+
+    @PostMapping(value = "add-participant")
+    public ResponseEntity<Event> addParticipant(@RequestParam("eventid") long event_id, @RequestParam("personid") long person_id ) {
+
+
+        return new ResponseEntity<>(this.eventService.addParticipant(event_id, person_id), HttpStatus.OK);
+    }
+
 }

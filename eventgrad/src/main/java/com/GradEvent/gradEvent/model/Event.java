@@ -69,4 +69,8 @@ public class Event {
     public void setParticipant(List<Person> participant) {
         this.participant = participant;
     }
+
+    public void addParticipant(Person person){
+        this.participant.add(person);
+    }
 }
